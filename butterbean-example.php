@@ -37,6 +37,15 @@ if ( ! class_exists( 'ButterBean_Example' ) ) {
 			add_action( 'butterbean_register', array( $this, 'register' ), 10, 2 );
 		}
 
+		/**
+		 * Registers managers, sections, controls, and settings.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  object  $butterbean  Instance of the `ButterBean` object.
+		 * @param  string  $post_type
+		 * @return void
+		 */
 		public function register( $butterbean, $post_type ) {
 
 			if ( 'page' !== $post_type )
