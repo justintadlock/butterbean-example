@@ -48,7 +48,7 @@ if ( ! class_exists( 'ButterBean_Example' ) ) {
 		 */
 		public function register( $butterbean, $post_type ) {
 
-			if ( 'page' !== $post_type )
+			if ( 'page' !== $post_type && 'post' !== $post_type )
 				return;
 
 			/* === Register Managers === */
@@ -56,14 +56,14 @@ if ( ! class_exists( 'ButterBean_Example' ) ) {
 			$butterbean->register_manager(
 				'bbe_example',
 				array(
-					'label'     => 'ButterBean Example:',
-					'post_type' => 'page',
+					'label'     => 'ButterBean Example',
+					'post_type' => array( 'post', 'page' ),
 					'context'   => 'normal',
 					'priority'  => 'high'
 				)
 			);
 
-			$manager = $butterbean->get_manager( 'bbe_example' );
+			$manager  = $butterbean->get_manager( 'bbe_example' );
 
 			/* === Register Sections === */
 
@@ -84,6 +84,22 @@ if ( ! class_exists( 'ButterBean_Example' ) ) {
 			);
 
 			$manager->register_section(
+				'bbe_color_fields',
+				array(
+					'label' => 'Color Fields',
+					'icon'  => 'dashicons-art'
+				)
+			);
+
+			$manager->register_section(
+				'bbe_radio_fields',
+				array(
+					'label' => 'Radio Fields',
+					'icon'  => 'dashicons-carrot'
+				)
+			);
+
+			$manager->register_section(
 				'bbe_special_fields',
 				array(
 					'label' => 'Special Fields',
@@ -94,100 +110,210 @@ if ( ! class_exists( 'ButterBean_Example' ) ) {
 			/* === Register Controls === */
 
 			$manager->register_control(
-				new ButterBean_Control_Text(
-					$manager,
 					'bbe_text_a',
 					array(
+						'type'        => 'text',
 						'section'     => 'bbe_text_fields',
 						'attr'        => array( 'class' => 'widefat' ),
 						'label'       => 'Example Text',
 						'description' => 'Example description.'
 					)
+			);
+
+			$manager->register_control(
+				'bbe_textarea_a',
+				array(
+					'type'        => 'textarea',
+					'section'     => 'bbe_text_fields',
+					'attr'        => array( 'class' => 'widefat' ),
+					'label'       => 'Example Textarea',
+					'description' => 'Example description.'
 				)
 			);
 
 			$manager->register_control(
-				new ButterBean_Control_Textarea(
-					$manager,
-					'bbe_textarea_a',
-					array(
-						'section'     => 'bbe_text_fields',
-						'attr'        => array( 'class' => 'widefat' ),
-						'label'       => 'Example Textarea',
-						'description' => 'Example description.'
+				'bbe_checkbox_a',
+				array(
+					'type'        => 'checkbox',
+					'section'     => 'bbe_common_fields',
+					'label'       => 'Example Checkbox',
+					'description' => 'Example description.'
+				)
+			);
+
+			$manager->register_control(
+				'bbe_checkboxes_a',
+				array(
+					'type'        => 'checkboxes',
+					'section'     => 'bbe_common_fields',
+					'label'       => 'Example Checkbox',
+					'description' => 'Example description.',
+					'choices'     => array(
+						'choice_d' => 'Choice D',
+						'choice_e' => 'Choice E',
+						'choice_f' => 'Choice F',
 					)
 				)
 			);
 
 			$manager->register_control(
-				new ButterBean_Control_Checkbox(
-					$manager,
-					'bbe_checkbox_a',
-					array(
-						'section'     => 'bbe_common_fields',
-						'label'       => 'Example Checkbox',
-						'description' => 'Example description.'
+				'bbe_radio_a',
+				array(
+					'type'        => 'radio',
+					'section'     => 'bbe_radio_fields',
+					'label'       => 'Example Radio',
+					'description' => 'Example description.',
+					'choices'     => array(
+						''         => 'None',
+						'choice_a' => 'Choice A',
+						'choice_b' => 'Choice B',
+						'choice_c' => 'Choice C',
 					)
 				)
 			);
 
 			$manager->register_control(
-				new ButterBean_Control_Radio(
-					$manager,
-					'bbe_radio_a',
-					array(
-						'section'     => 'bbe_common_fields',
-						'label'       => 'Example Radio',
-						'description' => 'Example description.',
-						'choices'     => array(
-							''         => 'None',
-							'choice_a' => 'Choice A',
-							'choice_b' => 'Choice B',
-							'choice_c' => 'Choice C',
+				'bbe_select_a',
+				array(
+					'type'        => 'select',
+					'section'     => 'bbe_common_fields',
+					'label'       => 'Example Select',
+					'description' => 'Example description.',
+					'choices'     => array(
+						''         => '',
+						'choice_x' => 'Choice X',
+						'choice_y' => 'Choice Y',
+						'choice_z' => 'Choice Z'
+					)
+				)
+			);
+
+			$manager->register_control(
+				'bbe_select_b',
+				array(
+					'type'        => 'select-group',
+					'section'     => 'bbe_common_fields',
+					'label'       => 'Example Select B',
+					'description' => 'Example description.',
+					'choices'  => array(
+						'' => '',
+						array(
+							'label' => esc_html__( 'Citrus', 'hcct' ),
+							'choices' => array(
+								'grapefruit' => esc_html__( 'Grapefruit', 'hcct' ),
+								'lemon'      => esc_html__( 'Lemon',      'hcct' ),
+								'lime'       => esc_html__( 'Lime',       'hcct' ),
+								'orange'     => esc_html__( 'Orange',     'hcct' ),
+							)
+						),
+						array(
+							'label'   => esc_html__( 'Melons', 'hcct' ),
+							'choices' => array(
+								'banana-melon' => __( 'Banana',     'hcct' ),
+								'cantaloupe'   => __( 'Cantaloupe', 'hcct' ),
+								'honeydew'     => __( 'Honeydew',   'hcct' ),
+								'watermelon'   => __( 'Watermelon', 'hcct' )
+							)
 						)
 					)
 				)
 			);
 
 			$manager->register_control(
-				new ButterBean_Control_Select(
-					$manager,
-					'bbe_select_a',
-					array(
-						'section'     => 'bbe_common_fields',
-						'label'       => 'Example Select',
-						'description' => 'Example description.',
-						'choices'     => array(
-							''         => '',
-							'choice_x' => 'Choice X',
-							'choice_y' => 'Choice Y',
-							'choice_z' => 'Choice Z'
+				'bbe_color_a',
+				array(
+					'type'        => 'color',
+					'section'     => 'bbe_color_fields',
+					'label'       => 'Pick a color',
+					'description' => 'Example description.',
+				)
+			);
+
+			$manager->register_control(
+				'bbe_palette_a',
+				array(
+					'type'        => 'palette',
+					'section'     => 'bbe_color_fields',
+					'label'       => 'Pick a color palette',
+					'description' => 'Example description.',
+					'choices'     => array(
+						'cilantro' => array(
+							'label' => __( 'Cilantro', 'hcct' ),
+							'colors' => array( '99ce15', '389113', 'BDE066', 'DB412C' )
+						),
+						'quench' => array(
+							'label' => __( 'Quench', 'hcct' ),
+							'colors' => array( '#82D9F5', '#7cc7dc', '#60A4B9', '#a07096' )
+						),
+						'cloudy-days' => array(
+							'label' => __( 'Cloudy Days', 'hcct' ),
+							'colors' => array( '#E2735F', '#eaa16e', '#FBDF8B', '#ffe249' )
+						)
+					)
+				)
+			);
+
+			$uri = trailingslashit( plugin_dir_url(  __FILE__ ) );
+
+			$manager->register_control(
+				'bbe_radio_image_a',
+				array(
+					'type'        => 'radio-image',
+					'section'     => 'bbe_radio_fields',
+					'label'       => 'Example Radio Image',
+					'description' => 'Example description.',
+					'choices' => array(
+						'horizon' => array(
+							'url'   => $uri . 'images/horizon-thumb.jpg',
+							'label' => __( 'Horizon', 'hcct' )
+						),
+						'orange-burn' => array(
+							'url'   => $uri . 'images/orange-burn-thumb.jpg',
+							'label' => __( 'Orange Burn', 'hcct' )
+						),
+						'planet-burst' => array(
+							'url'   => $uri . 'images/planet-burst-thumb.jpg',
+							'label' => __( 'Planet Burst', 'hcct' )
+						),
+						'planets-blue' => array(
+							'url'   => $uri . 'images/planets-blue-thumb.jpg',
+							'label' => __( 'Blue Planets', 'hcct' )
+						),
+						'space-splatters' => array(
+							'url'   => $uri . 'images/space-splatters-thumb.jpg',
+							'label' => __( 'Space Splatters', 'hcct' )
 						)
 					)
 				)
 			);
 
 			$manager->register_control(
-				new ButterBean_Control_Date(
-					$manager,
-					'bbe_date_a',
-					array(
-						'section'     => 'bbe_special_fields',
-						'label'       => 'Example Date',
-						'description' => 'Example description.'
-					)
+				'bbe_image_a',
+				array(
+					'type'        => 'image',
+					'section'     => 'bbe_special_fields',
+					'label'       => 'Example Image',
+					'description' => 'Example description.'
 				)
 			);
 
 			$manager->register_control(
-				new ButterBean_Control_Multi_Avatars(
-					$manager,
-					'bbe_multiavatars_a',
-					array(
-						'section'     => 'bbe_special_fields',
-						'label'       => 'Example Multi Avatars',
-						'description' => 'Example description.',
-					)
+				'bbe_date_a',
+				array(
+					'type'        => 'date',
+					'section'     => 'bbe_special_fields',
+					'label'       => 'Example Date',
+					'description' => 'Example description.'
+				)
+			);
+
+			$manager->register_control(
+				'bbe_multiavatars_a',
+				array(
+					'type'        => 'multi-avatars',
+					'section'     => 'bbe_special_fields',
+					'label'       => 'Example Multi Avatars',
+					'description' => 'Example description.',
 				)
 			);
 
@@ -209,6 +335,14 @@ if ( ! class_exists( 'ButterBean_Example' ) ) {
 			);
 
 			$manager->register_setting(
+				new ButterBean_Setting_Array(
+					$manager,
+					'bbe_checkboxes_a',
+					array( 'sanitize_callback' => 'sanitize_key' )
+				)
+			);
+
+			$manager->register_setting(
 				'bbe_radio_a',
 				array( 'sanitize_callback' => 'sanitize_key' )
 			);
@@ -223,6 +357,20 @@ if ( ! class_exists( 'ButterBean_Example' ) ) {
 					$manager,
 					'bbe_date_a'
 				)
+			);
+
+			$manager->register_setting(
+				'bbe_color_a',
+				array( 'sanitize_callback' => 'sanitize_hex_color_no_hash' )
+			);
+			$manager->register_setting(
+				'bbe_palette_a',
+				array( 'sanitize_callback' => 'sanitize_key' )
+			);
+
+			$manager->register_setting(
+				'bbe_image_a',
+				array( 'sanitize_callback' => 'absint' )
 			);
 
 			$manager->register_setting(
